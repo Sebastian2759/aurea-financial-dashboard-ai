@@ -75,7 +75,7 @@ Cuando el proveedor falla, la aplicación conserva el último dato real y señal
 
 Sin JWT válido: **401**. Con identidad válida pero sin permiso: **403**. Consultar un ID de elemento ajeno dentro de la lista propia produce **404**. Una API Key no concede los permisos del dashboard. Al cambiar de usuario se cancelan solicitudes, se cierra la conexión anterior y se limpia el estado restringido.
 
-## Decisiones que defendería en una entrevista
+## Decisiones
 
 > Partí de una plantilla con Clean Architecture y CQRS para separar las reglas de negocio, los casos de uso y las integraciones. En Angular organicé el código por funcionalidades: mercado, seguimiento y administración.
 >
