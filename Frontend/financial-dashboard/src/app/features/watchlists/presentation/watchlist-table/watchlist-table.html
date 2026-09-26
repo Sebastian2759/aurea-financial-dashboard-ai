@@ -1,0 +1,37 @@
+<div class="table-scroll">
+  <table>
+    <thead>
+      <tr>
+        <th>Activo</th>
+        <th>Nota</th>
+        <th>Agregado</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (item of items(); track item.id) {
+        <tr>
+          <td>
+            <strong>{{ name(item.coinId) }}</strong>
+          </td>
+          <td>{{ item.note || 'Sin nota' }}</td>
+          <td>{{ item.createdAtUtc | date: 'dd/MM/yyyy' }}</td>
+          <td class="nowrap">
+            <button class="text-button" (click)="edit.emit(item)" [disabled]="busy()">Editar</button
+            ><button class="text-button danger" (click)="remove.emit(item)" [disabled]="busy()">
+              Eliminar
+            </button>
+          </td>
+        </tr>
+      } @empty {
+        <tr>
+          <td colspan="4" class="empty">
+            Tu lista está lista para empezar.<br /><span class="muted"
+              >Agrega un activo para tenerlo a mano.</span
+            >
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

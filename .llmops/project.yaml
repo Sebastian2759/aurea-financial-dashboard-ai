@@ -1,0 +1,11 @@
+project: aurea-financial-dashboard-ai
+stack: dotnet10-angular22
+standards_version: '0.1'
+scaffolded_from: Template
+created_at: '2026-09-25'
+active_workflows: [local-contextual-review]
+execution: current-development-agent
+context_command: python tools/context.py
+graphify_version: 0.9.67
+retrieval: sqlite-fts5-plus-graph-expansion
+runtime_llm_service: none

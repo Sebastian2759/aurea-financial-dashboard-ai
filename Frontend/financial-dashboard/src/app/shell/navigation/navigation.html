@@ -1,0 +1,25 @@
+<nav aria-label="Principal">
+  <div class="nav-label">WORKSPACE</div>
+  <a routerLink="/market" routerLinkActive="active"><span aria-hidden="true">▦</span>Mercado</a>
+  @if (session.can('watchlist.read')) {
+    <a routerLink="/watchlists" routerLinkActive="active"
+      ><span aria-hidden="true">☆</span>Seguimiento</a
+    >
+  }
+  @if (session.can('thresholds.write')) {
+    <div class="nav-label admin-label">ADMINISTRACIÓN</div>
+    <a routerLink="/administration/thresholds" routerLinkActive="active"
+      ><span aria-hidden="true">≋</span>Umbrales</a
+    >
+  }
+  @if (session.can('audit.read')) {
+    <a routerLink="/administration/audit" routerLinkActive="active"
+      ><span aria-hidden="true">↺</span>Auditoría</a
+    >
+  }
+  @if (session.can('system-logs.read')) {
+    <a routerLink="/administration/system-logs" routerLinkActive="active"
+      ><span aria-hidden="true">☷</span>Registros del sistema</a
+    >
+  }
+</nav>

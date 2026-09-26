@@ -1,0 +1,48 @@
+<header class="page-heading">
+  <div>
+    <div class="eyebrow">ADMINISTRACIÓN</div>
+    <h1>Señales bajo control.</h1>
+    <p>Define cuándo la volatilidad merece una mirada más cercana.</p>
+  </div>
+  <span class="badge">Global</span>
+</header>
+<section class="panel settings-panel">
+  <h2>Umbral de volatilidad</h2>
+  <p class="muted">
+    Los activos con una volatilidad superior a este porcentaje se destacarán en el mercado de todos
+    los usuarios.
+  </p>
+  @if (error()) {
+    <p class="notice error" role="alert">{{ error() }}</p>
+    @if (!ready()) {
+      <button class="secondary" (click)="load()" [disabled]="loading()">Reintentar carga</button>
+    }
+  }
+  @if (loading()) {
+    <p role="status">Cargando umbral…</p>
+  }
+  @if (success()) {
+    <p class="notice success" role="status">{{ success() }}</p>
+  }
+  <form #form="ngForm" (ngSubmit)="form.valid && save()">
+    <label for="threshold">Volatilidad máxima (%)</label>
+    <div class="form-actions">
+      <input
+        id="threshold"
+        type="number"
+        name="threshold"
+        [(ngModel)]="value"
+        required
+        min="0.01"
+        max="100"
+        step="0.01"
+        [disabled]="busy() || !ready()"
+      /><button class="primary" type="submit" [disabled]="busy() || !ready() || form.invalid">
+        {{ busy() ? 'Guardando…' : 'Guardar umbral' }}
+      </button>
+    </div>
+    <p class="footnote">
+      Rango permitido: 0,01 % a 100 %. El cambio se conserva y se registra en auditoría.
+    </p>
+  </form>
+</section>

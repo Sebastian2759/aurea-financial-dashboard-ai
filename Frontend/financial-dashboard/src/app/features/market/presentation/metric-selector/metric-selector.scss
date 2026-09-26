@@ -1,0 +1,17 @@
+.metric-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  border: 0;
+  padding: 0;
+  margin: 0;
+}
+.metric-options legend {
+  margin-bottom: 12px;
+}
+.metric-options label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px;
+}

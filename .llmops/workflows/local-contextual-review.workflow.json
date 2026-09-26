@@ -1,0 +1,25 @@
+{
+  "id": "local-contextual-review",
+  "version": "1",
+  "execution": "current-agent-sequential",
+  "steps": [
+    "context.status",
+    "context.query",
+    "implement",
+    "test",
+    "review-v1",
+    "context.sync",
+    "context.checkpoint"
+  ],
+  "tools": {
+    "context.status": "python tools/context.py status",
+    "context.query": "python tools/context.py query \"tarea\"",
+    "context.sync": "python tools/context.py sync",
+    "test.backend": "dotnet test Test/Test.csproj",
+    "test.frontend": "npm --prefix Frontend/financial-dashboard test",
+    "test.context": "python tools/test_context.py"
+  },
+  "prompt": "../prompts/review-v1.md",
+  "output_schema": "../schemas/review.schema.json",
+  "note": "Procedimiento local; el workflow de PR heredado permanece como referencia y no se afirma que exista un servicio de inferencia desplegado."
+}

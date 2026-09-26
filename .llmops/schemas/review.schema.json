@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": [
+    "task",
+    "promptVersion",
+    "sources",
+    "findings",
+    "validation",
+    "result"
+  ],
+  "properties": {
+    "task": {
+      "type": "string"
+    },
+    "promptVersion": {
+      "type": "string"
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "path",
+          "sha256"
+        ]
+      }
+    },
+    "findings": {
+      "type": "array"
+    },
+    "validation": {
+      "type": "array"
+    },
+    "result": {
+      "enum": [
+        "passed",
+        "passed-with-open-validation",
+        "failed"
+      ]
+    },
+    "model": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "tokens": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "recordedAt": {
+      "type": "string"
+    }
+  }
+}

@@ -1,0 +1,17 @@
+<div class="role-switcher">
+  <span class="avatar">{{ session.session()?.name?.slice(0, 1) || 'D' }}</span
+  ><label for="demo-user"
+    ><span>SESIÓN DEMO</span
+    ><select
+      id="demo-user"
+      [value]="session.session()?.userId || ''"
+      [disabled]="session.busy()"
+      (change)="session.switchTo($any($event.target).value)"
+    >
+      <option value="" disabled>Seleccionar usuario</option>
+      @for (user of users; track user.id) {
+        <option [value]="user.id">{{ user.name }} · {{ user.description }}</option>
+      }
+    </select></label
+  >
+</div>

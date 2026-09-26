@@ -1,0 +1,15 @@
+<div class="segmented" aria-label="Moneda de cotización">
+  <button
+    [class.active]="currency() === 'usd'"
+    [attr.aria-pressed]="currency() === 'usd'"
+    (click)="selected.emit('usd')"
+  >
+    USD</button
+  ><button
+    [class.active]="currency() === 'eur'"
+    [attr.aria-pressed]="currency() === 'eur'"
+    (click)="selected.emit('eur')"
+  >
+    EUR
+  </button>
+</div>

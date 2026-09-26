@@ -1,0 +1,115 @@
+name: Verificar entrega
+on: [push, pull_request, workflow_dispatch]
+permissions:
+  contents: read
+jobs:
+  application:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24.21.0'
+          cache: npm
+          cache-dependency-path: Frontend/financial-dashboard/package-lock.json
+      - name: Pruebas HTTP, dominio, persistencia y arquitectura
+        run: dotnet test Test/Test.csproj --logger "trx;LogFileName=backend.trx" --results-directory test-results
+      - name: Auditoría de dependencias .NET
+        run: |
+          dotnet list Example.sln package --vulnerable --include-transitive
+          dotnet list Example.sln package --deprecated
+          dotnet list Example.sln package --outdated
+      - name: Instalar frontend
+        working-directory: Frontend/financial-dashboard
+        run: npm ci
+      - name: Angular y pruebas de autorización
+        working-directory: Frontend/financial-dashboard
+        run: |
+          npm run typecheck
+          npm test
+          npm run build
+      - name: Instalación completa de un comando
+        shell: pwsh
+        run: ./start.ps1
+      - name: Arranque Unix idempotente
+        run: |
+          sha256sum .env > /tmp/aurea-config.sha256
+          sh start.sh
+          sha256sum --check /tmp/aurea-config.sha256
+      - name: Prueba de instalación y reinicio real de SQL Server
+        run: |
+          node tools/smoke.mjs
+          docker compose restart api database
+          docker compose up --detach --wait --wait-timeout 300
+          node tools/smoke.mjs --verify-restart
+      - name: Datos reales de CoinGecko después del reinicio
+        run: node tools/verify-live.mjs
+      - name: Navegador Chromium
+        working-directory: Frontend/financial-dashboard
+        run: npx playwright install --with-deps chromium
+      - name: Recorrido de los roles en navegador
+        env:
+          REQUIRE_LIVE_DATA: 'true'
+        working-directory: Frontend/financial-dashboard
+        run: npm run e2e
+      - name: Diagnóstico de contenedores
+        if: failure()
+        run: |
+          if [ -f .env ]; then docker compose logs --tail 100; fi
+          find Frontend/financial-dashboard/test-results -name error-context.md -exec cat {} \; 2>/dev/null || true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: evidencia-aplicacion
+          path: |
+            test-results
+            Frontend/financial-dashboard/playwright-report
+            Frontend/financial-dashboard/test-results
+      - name: Detener contenedores de CI
+        if: always()
+        run: if [ -f .env ]; then docker compose down; fi
+  context:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r tools/requirements.txt
+      - name: Regenerar Graphify, recuperar contexto y crear checkpoint
+        shell: bash
+        env:
+          PYTHONHASHSEED: '0'
+          PYTHONIOENCODING: utf-8
+        run: |
+          mkdir -p .llmops/evaluations/ci
+          python tools/context.py sync > .llmops/evaluations/ci/sync.log
+          python tools/context.py query "AccessRules RequireOwner WatchlistWrite" > .llmops/evaluations/ci/query.json
+          python tools/context.py checkpoint --task "Preparar contexto de la entrega pública" --completed "Grafo e índice regenerados; consulta de autorización ejecutada sin error" --next "Ejecutar las pruebas automatizadas de recuperación y privacidad" --evidence ".llmops/evaluations/ci/sync.log" --evidence ".llmops/evaluations/ci/query.json" > /dev/null
+          python tools/context.py status > .llmops/evaluations/ci/status.json
+      - name: Pruebas de recuperación, vigencia y privacidad del grafo
+        shell: bash
+        env:
+          PYTHONHASHSEED: '0'
+          PYTHONIOENCODING: utf-8
+        run: python tools/test_context.py 2>&1 | tee .llmops/evaluations/ci/tests.log
+      - name: Publicar evidencia reproducible de Graphify y RAG
+        uses: actions/upload-artifact@v4
+        if: success()
+        with:
+          name: evidencia-contexto
+          include-hidden-files: true
+          if-no-files-found: error
+          path: |
+            docs/architecture/graphify-out/graph.json
+            docs/architecture/graphify-out/manifest.json
+            .llmops/state/checkpoint.json
+            .llmops/evaluations/ci/sync.log
+            .llmops/evaluations/ci/query.json
+            .llmops/evaluations/ci/status.json
+            .llmops/evaluations/ci/tests.log

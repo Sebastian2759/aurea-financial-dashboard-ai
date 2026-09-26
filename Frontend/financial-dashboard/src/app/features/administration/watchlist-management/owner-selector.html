@@ -1,0 +1,12 @@
+<label for="owner">Lista de seguimiento de </label
+><select
+  id="owner"
+  [value]="owner()"
+  [disabled]="busy()"
+  (change)="selected.emit($any($event.target).value)"
+>
+  <option value="me">Mi lista (Admin)</option>
+  @for (user of owners(); track user.id) {
+    <option [value]="user.id">{{ user.name }}</option>
+  }
+</select>

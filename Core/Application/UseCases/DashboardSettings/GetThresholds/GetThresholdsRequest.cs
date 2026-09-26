@@ -1,0 +1,16 @@
+using Application.Base;
+using Application.Dtos;
+using Application.Security;
+using Application.Auditing;
+using Domain.Base.Interface;
+using Domain.Entities;
+using Domain.Markets;
+using Domain.Security;
+using Domain.Contracts.Security;
+using Domain.Contracts.Persistence;
+using Domain.Contracts.Adapter.Mapper;
+using Domain.Contracts.Adapter.MarketData;
+using FluentValidation;
+using MediatR;
+namespace Application.UseCases.DashboardSettings.GetThresholds;
+public sealed record GetThresholdsRequest() : IRequest<ResponseBase<GetThresholdsResponse>>;

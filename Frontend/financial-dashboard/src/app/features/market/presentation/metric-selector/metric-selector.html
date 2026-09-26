@@ -1,0 +1,12 @@
+<fieldset class="metric-options">
+  <legend>Métricas visibles</legend>
+  @for (metric of metrics; track metric.key) {
+    <label
+      ><input
+        type="checkbox"
+        [checked]="selected().includes(metric.key)"
+        (change)="toggle.emit(metric.key)"
+      />{{ metric.label }}</label
+    >
+  }
+</fieldset>

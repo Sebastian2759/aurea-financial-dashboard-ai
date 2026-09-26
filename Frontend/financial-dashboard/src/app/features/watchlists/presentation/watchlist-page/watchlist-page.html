@@ -1,0 +1,54 @@
+<header class="page-heading">
+  <div>
+    <div class="eyebrow">TU ESPACIO DE TRABAJO</div>
+    <h1>Seguimiento con intención.</h1>
+    <p>Organiza tus activos y conserva el contexto de cada decisión.</p>
+  </div>
+  <span class="badge">{{ vm.session.session()?.role }}</span>
+</header>
+@if (vm.session.can('watchlist.manage-all')) {
+  <div class="owner-bar">
+    <app-owner-selector
+      [owners]="vm.owners()"
+      [owner]="vm.owner()"
+      [busy]="vm.saving()"
+      (selected)="ownerChanged($event)"
+    />
+    <p class="muted">Los cambios se registrarán con tu identidad de Admin.</p>
+  </div>
+}
+@if (vm.error()) {
+  <div class="notice error" role="alert">{{ vm.error() }}</div>
+}
+@if (vm.success()) {
+  <div class="notice success" role="status">{{ vm.success() }}</div>
+}
+<div class="watchlist-layout">
+  <section class="panel">
+    <div class="panel-heading">
+      <h2>Activos en seguimiento</h2>
+      <span class="muted">{{ vm.items().length }} activos</span>
+    </div>
+    @if (vm.loading()) {
+      <p class="empty" role="status">Cargando lista…</p>
+    } @else {
+      <app-watchlist-table
+        [items]="vm.items()"
+        [busy]="vm.saving()"
+        (edit)="editing.set($event)"
+        (remove)="removing.set($event)"
+      />
+    }
+  </section>
+  <aside class="panel">
+    <app-watchlist-item-form
+      [item]="editing()"
+      [busy]="vm.saving()"
+      (save)="save($event)"
+      (cancel)="editing.set(null)"
+    />
+  </aside>
+</div>
+@if (removing()) {
+  <app-remove-item-dialog [busy]="vm.saving()" (confirm)="remove()" (cancel)="removing.set(null)" />
+}

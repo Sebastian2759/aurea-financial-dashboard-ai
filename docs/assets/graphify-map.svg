@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="860" viewBox="0 0 1280 860" role="img" aria-labelledby="title desc">
+  <title id="title">Áurea: vista seleccionada del grafo real de Graphify</title>
+  <desc id="desc">Ocho símbolos y seis relaciones seleccionados del grafo de 1505 nodos y 3562 aristas. Cuatro handlers de seguimiento llaman a RequireOwner mediante relaciones EXTRACTED. MarketBroadcastWorker.ExecuteAsync y MarketHub.Subscribe se conectan con GetMarketSnapshotRequest mediante relaciones INFERRED. La imagen es una visualización editorial del artefacto real, no una captura de Graphify ni una prueba de ejecución.</desc>
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#0b1728"/><stop offset="1" stop-color="#14233b"/></linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#65dfbd"/><stop offset="1" stop-color="#e5bd70"/></linearGradient>
+    <marker id="greenArrow" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0 0 L8 4.5 L0 9 Z" fill="#65dfbd"/></marker>
+    <marker id="goldArrow" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0 0 L8 4.5 L0 9 Z" fill="#e5bd70"/></marker>
+    <style>
+      text{font-family:Inter,Segoe UI,Arial,sans-serif;fill:#eff5fc}
+      .muted{fill:#a9bdd2}.green{fill:#65dfbd}.gold{fill:#e5bd70}.label{font-size:16px}.small{font-size:14px}.mono{font-family:Consolas,Menlo,monospace;font-size:14px}.edge{fill:none;stroke:#65dfbd;stroke-width:2.5;marker-end:url(#greenArrow)}.inferred{fill:none;stroke:#e5bd70;stroke-width:2.5;stroke-dasharray:8 6;marker-end:url(#goldArrow)}
+    </style>
+  </defs>
+  <rect width="1280" height="860" rx="24" fill="url(#background)"/>
+  <rect x="40" y="38" width="52" height="5" rx="2.5" fill="url(#accent)"/>
+  <text x="106" y="45" font-size="13" letter-spacing="3" class="green">ÁUREA / CONTEXTO VERIFICABLE</text>
+  <text x="40" y="97" font-size="36" font-weight="700">El código también se puede recorrer como un grafo</text>
+  <text x="40" y="128" font-size="17" class="muted">Vista resumida del artefacto real de Graphify 0.9.67 · selección editorial de símbolos y relaciones</text>
+
+  <g transform="translate(40 159)">
+    <rect width="285" height="77" rx="12" fill="#1a2c44" stroke="#2c425a"/>
+    <text x="20" y="36" font-size="28" font-weight="700">1.505</text><text x="117" y="34" class="label muted">nodos</text>
+    <text x="20" y="60" class="small muted">Incluyen 21 documentos explícitos</text>
+    <rect x="305" width="285" height="77" rx="12" fill="#1a2c44" stroke="#2c425a"/>
+    <text x="325" y="36" font-size="28" font-weight="700">3.562</text><text x="422" y="34" class="label muted">relaciones</text>
+    <text x="325" y="60" class="small muted">3.407 extraídas · 155 inferidas</text>
+    <rect x="610" width="285" height="77" rx="12" fill="#1a2c44" stroke="#2c425a"/>
+    <text x="630" y="36" font-size="28" font-weight="700">291</text><text x="702" y="34" class="label muted">fuentes en el corpus</text>
+    <text x="630" y="60" class="small muted">Archivo, líneas, símbolos y SHA-256</text>
+    <rect x="915" width="285" height="77" rx="12" fill="#1a2c44" stroke="#2c425a"/>
+    <text x="935" y="35" font-size="25" font-weight="700">8 nodos / 6 aristas</text>
+    <text x="935" y="60" class="small muted">Mostrados en esta selección</text>
+  </g>
+
+  <rect x="40" y="260" width="680" height="420" rx="16" fill="#102238" stroke="#2d465e"/>
+  <text x="62" y="294" font-size="20" font-weight="700">01 / Seguimiento y autorización</text>
+  <text x="62" y="321" class="label muted">Una regla de propietario compartida por los casos de uso</text>
+  <g>
+    <path d="M364 380 C403 380 399 495 438 495" class="edge"/>
+    <path d="M364 457 C403 457 400 495 438 495" class="edge"/>
+    <path d="M364 534 C403 534 400 495 438 495" class="edge"/>
+    <path d="M364 611 C403 611 399 495 438 495" class="edge"/>
+    <rect x="62" y="350" width="302" height="60" rx="9" fill="#1a3446" stroke="#3b6f70"/>
+    <text x="77" y="375" font-size="17" font-weight="600">AddWatchlistItemCommand</text><text x="77" y="397" class="mono muted">Handle() · llamada en L21</text>
+    <rect x="62" y="427" width="302" height="60" rx="9" fill="#1a3446" stroke="#3b6f70"/>
+    <text x="77" y="452" font-size="17" font-weight="600">GetWatchlistQuery</text><text x="77" y="474" class="mono muted">Handle() · llamada en L21</text>
+    <rect x="62" y="504" width="302" height="60" rx="9" fill="#1a3446" stroke="#3b6f70"/>
+    <text x="77" y="529" font-size="17" font-weight="600">UpdateWatchlistItemCommand</text><text x="77" y="551" class="mono muted">Handle() · llamada en L21</text>
+    <rect x="62" y="581" width="302" height="60" rx="9" fill="#1a3446" stroke="#3b6f70"/>
+    <text x="77" y="606" font-size="17" font-weight="600">RemoveWatchlistItemCommand</text><text x="77" y="628" class="mono muted">Handle() · llamada en L21</text>
+    <rect x="442" y="451" width="255" height="87" rx="12" fill="#173d3d" stroke="#65dfbd" stroke-width="1.5"/>
+    <text x="460" y="479" class="label green">AccessRules</text>
+    <text x="460" y="509" font-size="23" font-weight="700">RequireOwner()</text>
+    <text x="450" y="567" class="small green">calls · EXTRACTED</text>
+    <text x="450" y="592" class="small muted">4 relaciones con origen AST</text>
+    <text x="450" y="614" class="small muted">Destino: AccessRules.cs, L10</text>
+  </g>
+
+  <rect x="742" y="260" width="498" height="420" rx="16" fill="#102238" stroke="#2d465e"/>
+  <text x="765" y="294" font-size="20" font-weight="700">02 / Actualización de mercado</text>
+  <text x="765" y="321" class="label muted">La procedencia conserva la incertidumbre</text>
+  <path d="M991 417 L991 439 L896 439 L896 562" class="inferred"/>
+  <path d="M991 523 L991 562" class="inferred"/>
+  <rect x="765" y="347" width="452" height="70" rx="10" fill="#2a3040" stroke="#7e704d"/>
+  <text x="784" y="376" font-size="20" font-weight="600">MarketBroadcastWorker</text>
+  <text x="784" y="400" class="mono muted">ExecuteAsync() · llamada en L19</text>
+  <rect x="935" y="453" width="282" height="70" rx="10" fill="#2a3040" stroke="#7e704d"/>
+  <text x="953" y="482" font-size="20" font-weight="600">MarketHub</text>
+  <text x="953" y="506" class="mono muted">Subscribe() · L17</text>
+  <text x="770" y="483" class="small gold">calls · INFERRED</text>
+  <text x="770" y="507" class="small muted">score: 0,85</text>
+  <rect x="765" y="565" width="452" height="64" rx="10" fill="#383624" stroke="#e5bd70" stroke-width="1.5"/>
+  <text x="786" y="604" font-size="24" font-weight="700">GetMarketSnapshotRequest</text>
+  <text x="765" y="655" class="small muted">La relación inferida se revisa contra su código fuente.</text>
+
+  <path d="M40 711 H1240" stroke="#30465c"/>
+  <path d="M40 739 H83" stroke="#65dfbd" stroke-width="3"/><text x="96" y="744" class="small">Extraída del código</text>
+  <path d="M289 739 H332" stroke="#e5bd70" stroke-width="3" stroke-dasharray="8 6"/><text x="345" y="744" class="small">Inferida por Graphify; requiere revisión</text>
+  <text x="40" y="781" class="mono muted">Fuente: docs/architecture/graphify-out/graph.json · baseline 25 sep 2026 · SHA-256: 3afbf00633e2…</text>
+  <text x="40" y="811" class="small muted">Visualización propia a partir de nodos y aristas existentes. No es una captura oficial ni acredita cobertura o ejecución.</text>
+  <text x="40" y="833" class="small muted">Método, identificadores exactos, límites y reproducción: docs/AI_CONTEXT.md</text>
+</svg>

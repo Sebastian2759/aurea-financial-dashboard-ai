@@ -1,0 +1,10 @@
+<dialog #dialog (cancel)="$event.preventDefault(); cancel.emit()" aria-labelledby="remove-title">
+  <h2 id="remove-title">¿Eliminar este seguimiento?</h2>
+  <p>El activo saldrá de la lista. Puedes volver a agregarlo después.</p>
+  <div class="form-actions">
+    <button class="secondary" (click)="cancel.emit()" [disabled]="busy()" autofocus>Cancelar</button
+    ><button class="primary danger-bg" (click)="confirm.emit()" [disabled]="busy()">
+      {{ busy() ? 'Eliminando…' : 'Eliminar activo' }}
+    </button>
+  </div>
+</dialog>

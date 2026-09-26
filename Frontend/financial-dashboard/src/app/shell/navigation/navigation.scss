@@ -1,0 +1,50 @@
+nav {
+  padding: 35px 17px;
+}
+.nav-label {
+  font-size: 9px;
+  letter-spacing: 1.8px;
+  color: #8c9590;
+  margin: 0 15px 15px;
+}
+.admin-label {
+  margin-top: 36px;
+}
+a {
+  display: flex;
+  gap: 13px;
+  align-items: center;
+  padding: 13px 15px;
+  text-decoration: none;
+  color: #68716c;
+  font-size: 13px;
+  margin: 3px 0;
+  border-radius: 6px;
+}
+a span {
+  font-size: 19px;
+  width: 20px;
+  text-align: center;
+}
+a.active {
+  background: #e6efe9;
+  color: #205c49;
+  font-weight: 600;
+}
+@media (max-width: 750px) {
+  nav {
+    display: flex;
+    gap: 4px;
+    padding: 10px;
+  }
+  .nav-label {
+    display: none;
+  }
+  a {
+    padding: 9px;
+    font-size: 12px;
+  }
+  a span {
+    display: none;
+  }
+}

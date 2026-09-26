@@ -1,0 +1,16 @@
+using Application.Base;
+using Application.Dtos;
+using Application.Security;
+using Application.Auditing;
+using Domain.Base.Interface;
+using Domain.Entities;
+using Domain.Markets;
+using Domain.Security;
+using Domain.Contracts.Security;
+using Domain.Contracts.Persistence;
+using Domain.Contracts.Adapter.Mapper;
+using Domain.Contracts.Adapter.MarketData;
+using FluentValidation;
+using MediatR;
+namespace Application.UseCases.AuditEvents.GetAuditEvents;
+public sealed record GetAuditEventsRequest(int Page = 1, int PageSize = 20, string? ActorId = null, string? Action = null) : IRequest<ResponseBase<GetAuditEventsResponse>>;

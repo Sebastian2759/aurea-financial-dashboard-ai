@@ -1,0 +1,11 @@
+{
+  "id": "security",
+  "dimension": "seguridad",
+  "instructions": "Revisar el diff y el contexto recuperado contra .llmops/standards/security.md, docs/SECURITY.md y docs/decisions/ADR-001-dashboard.md. Comprobar JWT, RBAC, propiedad de recursos, secretos, validación de entrada y ausencia de información privada en contexto o artefactos. Reportar findings con dimension=seguridad y evidencia verificable según ../schemas/finding.schema.json; distinguir pruebas ejecutadas de pendientes mediante docs/TESTING.md. Esta definición guía al agente disponible; no implica un servicio automático desplegado.",
+  "tools": [
+    "diff-reader",
+    "repository-search",
+    "graph-query"
+  ],
+  "output_schema": "../schemas/finding.schema.json"
+}

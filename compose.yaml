@@ -1,0 +1,52 @@
+name: aurea-dashboard-ai
+services:
+  database:
+    image: mcr.microsoft.com/mssql/server:2022-CU22-ubuntu-22.04
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: Developer
+      MSSQL_SA_PASSWORD: ${SQL_PASSWORD:?Ejecuta start.ps1 o start.sh para generar .env}
+    volumes:
+      - sql-data:/var/opt/mssql
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P "$$MSSQL_SA_PASSWORD" -C -Q 'SELECT 1' -b -o /dev/null
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 30s
+  api:
+    build: .
+    environment:
+      ASPNETCORE_ENVIRONMENT: Demo
+      ConnectionStrings__AppDbContext: Server=database;Database=FinancialDashboard;User Id=sa;Password=${SQL_PASSWORD};Encrypt=True;TrustServerCertificate=True
+      Jwt__Secret: ${JWT_SECRET:?Falta JWT_SECRET}
+      ApiKey__Key: ${API_KEY:?Falta API_KEY}
+      DemoAuth__Enabled: "true"
+      Market__AllowDemoFallback: "false"
+      Market__ApiKey: ${COINGECKO_API_KEY:-}
+      Database__Initialize: "true"
+    depends_on:
+      database:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "--silent", "http://localhost:8080/health/ready"]
+      interval: 5s
+      timeout: 4s
+      retries: 30
+      start_period: 20s
+  frontend:
+    build: ./Frontend/financial-dashboard
+    ports:
+      - "127.0.0.1:${DASHBOARD_PORT:-8080}:80"
+    depends_on:
+      api:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://127.0.0.1/health/ready"]
+      interval: 5s
+      timeout: 4s
+      retries: 15
+volumes:
+  sql-data:

@@ -1,0 +1,17 @@
+.git/
+**/node_modules/
+**/bin/
+**/obj/
+**/.angular/
+**/dist/
+**/coverage/
+**/test-results/
+.llmops/cache/
+.llmops/state/
+.llmops/evaluations/
+docs/architecture/
+.env
+.env.*
+**/appsettings*.json
+**/package-lock.json
+**/packages.lock.json

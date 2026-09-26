@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="850" viewBox="0 0 1280 850" role="img" aria-labelledby="title desc">
+  <title id="title">Áurea: recuperación local con SQLite FTS5 y expansión del grafo</title>
+  <desc id="desc">El proceso comprueba la vigencia por hashes, recupera fragmentos mediante búsqueda textual BM25 con SQLite FTS5, añade relaciones del grafo y entrega fuentes al agente. Después se implementa, prueba y revisa el cambio, se regenera el contexto y se guarda un checkpoint con evidencia. No utiliza embeddings ni un modelo de inferencia dentro del dashboard.</desc>
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#0b1728"/><stop offset="1" stop-color="#14233b"/></linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#65dfbd"/><stop offset="1" stop-color="#e5bd70"/></linearGradient>
+    <marker id="arrow" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0 0 L8 4.5 L0 9 Z" fill="#65dfbd"/></marker>
+    <marker id="goldArrow" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0 0 L8 4.5 L0 9 Z" fill="#e5bd70"/></marker>
+    <style>text{font-family:Inter,Segoe UI,Arial,sans-serif;fill:#eff5fc}.muted{fill:#a9bdd2}.green{fill:#65dfbd}.gold{fill:#e5bd70}.small{font-size:15px}.mono{font-family:Consolas,Menlo,monospace;font-size:14px}.flow{fill:none;stroke:#65dfbd;stroke-width:2.5;marker-end:url(#arrow)}.loop{fill:none;stroke:#e5bd70;stroke-width:2.5;marker-end:url(#goldArrow)}</style>
+  </defs>
+  <rect width="1280" height="850" rx="24" fill="url(#background)"/>
+  <rect x="40" y="38" width="52" height="5" rx="2.5" fill="url(#accent)"/>
+  <text x="106" y="45" font-size="13" letter-spacing="3" class="green">ÁUREA / DESARROLLO ASISTIDO POR IA</text>
+  <text x="40" y="97" font-size="36" font-weight="700">Recuperar contexto. Comprobarlo. Cambiar el código.</text>
+  <text x="40" y="128" font-size="18" class="muted">RAG local: búsqueda textual + relaciones del grafo + fuentes trazables para el agente de desarrollo</text>
+
+  <rect x="40" y="164" width="1200" height="63" rx="12" fill="#1a2c44" stroke="#2c425a"/>
+  <text x="62" y="190" font-size="17" font-weight="700">CORPUS</text>
+  <text x="171" y="190" font-size="17">Requisitos · decisiones · código · pruebas · estándares de arquitectura y seguridad</text>
+  <text x="171" y="214" class="small muted">Se excluyen secretos, dependencias instaladas, compilados y estado de ejecución.</text>
+
+  <path d="M312 355 H344" class="flow"/>
+  <path d="M620 355 H652" class="flow"/>
+  <path d="M928 355 H960" class="flow"/>
+  <g>
+    <rect x="40" y="264" width="272" height="191" rx="14" fill="#142c3e" stroke="#3b6970"/>
+    <text x="62" y="298" font-size="14" class="green">01 / VIGENCIA</text>
+    <text x="62" y="333" font-size="23" font-weight="700">Hash antes de leer</text>
+    <text x="62" y="369" class="small muted">Compara las fuentes, el grafo</text>
+    <text x="62" y="393" class="small muted">y SQLite con su manifiesto.</text>
+    <text x="62" y="430" class="mono green">freshness()</text>
+
+    <rect x="348" y="264" width="272" height="191" rx="14" fill="#142c3e" stroke="#3b6970"/>
+    <text x="370" y="298" font-size="14" class="green">02 / RECUPERACIÓN</text>
+    <text x="370" y="333" font-size="23" font-weight="700">SQLite FTS5</text>
+    <text x="370" y="369" class="small muted">Términos + sinónimos locales.</text>
+    <text x="370" y="393" class="small muted">BM25 ordena los fragmentos.</text>
+    <text x="370" y="430" class="mono green">8 resultados por defecto</text>
+
+    <rect x="656" y="264" width="272" height="191" rx="14" fill="#142c3e" stroke="#3b6970"/>
+    <text x="678" y="298" font-size="14" class="green">03 / EXPANSIÓN</text>
+    <text x="678" y="333" font-size="23" font-weight="700">Vecinos del grafo</text>
+    <text x="678" y="369" class="small muted">Relaciones incidentes a nodos</text>
+    <text x="678" y="393" class="small muted">de los archivos recuperados.</text>
+    <text x="678" y="430" class="mono green">Hasta 30 relaciones</text>
+
+    <rect x="964" y="264" width="276" height="191" rx="14" fill="#173d3d" stroke="#65dfbd"/>
+    <text x="986" y="298" font-size="14" class="green">04 / CONTEXTO</text>
+    <text x="986" y="333" font-size="23" font-weight="700">Fuentes para la IA</text>
+    <text x="986" y="369" class="small muted">Archivo · líneas · SHA-256</text>
+    <text x="986" y="393" class="small muted">Símbolos · procedencia</text>
+    <text x="986" y="430" class="mono green">+ requisitos y checkpoint</text>
+  </g>
+
+  <path d="M176 456 V497" class="loop"/>
+  <rect x="40" y="500" width="580" height="105" rx="13" fill="#373321" stroke="#a18a52"/>
+  <text x="62" y="533" font-size="20" font-weight="700" class="gold">Si una fuente cambió, la consulta se detiene</text>
+  <text x="62" y="562" class="small muted">Revisar la diferencia → ejecutar sync → recuperar de nuevo.</text>
+  <text x="62" y="585" class="small muted">El índice antiguo no se presenta como contexto vigente.</text>
+
+  <path d="M1102 456 V624 H1102 V649" class="flow"/>
+  <rect x="656" y="500" width="584" height="105" rx="13" fill="#1a2c44" stroke="#2c425a"/>
+  <text x="678" y="533" font-size="20" font-weight="700">Un paquete auditable, no una respuesta automática</text>
+  <text x="678" y="562" class="small muted">El agente usa estas fuentes para proponer y revisar el cambio.</text>
+  <text x="678" y="585" class="small muted">La corrección se demuestra con código, revisión y pruebas.</text>
+
+  <rect x="40" y="652" width="1200" height="105" rx="14" fill="#152b41" stroke="#3b526b"/>
+  <text x="62" y="685" font-size="15" class="gold">CICLO DE TRABAJO</text>
+  <text x="62" y="722" font-size="22" font-weight="600">Implementar</text>
+  <text x="242" y="722" font-size="24" class="green">→</text>
+  <text x="288" y="722" font-size="22" font-weight="600">Probar y revisar</text>
+  <text x="518" y="722" font-size="24" class="green">→</text>
+  <text x="565" y="722" font-size="22" font-weight="600">Regenerar contexto</text>
+  <text x="834" y="722" font-size="24" class="green">→</text>
+  <text x="878" y="722" font-size="22" font-weight="600">Checkpoint + evidencia</text>
+  <text x="40" y="796" class="small muted">Implementación: tools/context.py · Graphify 0.9.67 · fragmentos de 70 líneas, avance de 55</text>
+  <text x="40" y="826" class="small muted">Sin embeddings, búsqueda vectorial ni servicio LLM dentro del dashboard. La generación la realiza el agente de desarrollo.</text>
+</svg>

@@ -1,0 +1,14 @@
+td:not(:first-child),
+th:not(:first-child) {
+  text-align: right;
+}
+.asset {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+.asset small {
+  display: block;
+  margin-top: 5px;
+  color: var(--muted);
+}

@@ -1,0 +1,11 @@
+{
+  "id": "architecture",
+  "dimension": "arquitectura",
+  "instructions": "Revisar el diff y el contexto recuperado contra .llmops/standards/architecture.md, docs/ARCHITECTURE.md y docs/decisions/ADR-001-dashboard.md. Comprobar Clean Architecture, CQRS, contratos, límites de las capas y las excepciones de composición documentadas. Reportar findings con dimension=arquitectura, fuentes y evidencia verificable según ../schemas/finding.schema.json. Esta definición guía al agente disponible; no implica un servicio automático desplegado.",
+  "tools": [
+    "diff-reader",
+    "repository-search",
+    "graph-query"
+  ],
+  "output_schema": "../schemas/finding.schema.json"
+}

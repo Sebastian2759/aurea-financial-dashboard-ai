@@ -1,0 +1,45 @@
+<a class="skip-link" href="#main">Saltar al contenido</a>
+<aside class="sidebar">
+  <a class="brand" href="/market"
+    ><span class="brand-icon">a</span>áurea<span class="brand-dot">.</span></a
+  ><app-navigation />
+  <div class="sidebar-bottom">
+    <span class="small-dot"></span> FINANCIAL WORKSPACE
+    <p>Claridad en cada movimiento.</p>
+  </div>
+</aside>
+<div class="workspace">
+  <header class="topbar">
+    <div class="breadcrumb">Workspace <span>/</span> Dashboard financiero</div>
+    <app-role-switcher />
+  </header>
+  <main id="main" tabindex="-1">
+    @if (session.error()) {
+      <div class="notice error" role="alert">{{ session.error() }}</div>
+    }
+    @if (session.session()) {
+      <router-outlet />
+    } @else {
+      <section class="welcome panel">
+        <div class="eyebrow">BIENVENIDO A ÁUREA</div>
+        <h1>Tu perspectiva del mercado.</h1>
+        <p>Explora la demostración con diferentes permisos.</p>
+        @if (session.busy()) {
+          <p role="status">Preparando tu espacio…</p>
+        } @else {
+          <div class="demo-users">
+            @for (user of users; track user.id) {
+              <button class="secondary" (click)="session.switchTo(user.id)">
+                <strong>{{ user.name }}</strong
+                ><span>{{ user.description }}</span>
+              </button>
+            }
+          </div>
+        }
+      </section>
+    }
+  </main>
+  <footer class="workspace-footer">
+    <span>ÁUREA · DASHBOARD FINANCIERO</span><span>CoinGecko / USD · EUR</span>
+  </footer>
+</div>

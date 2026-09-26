@@ -1,0 +1,144 @@
+<header class="page-heading">
+  <div>
+    <div class="eyebrow">VISTA GENERAL</div>
+    <h1>El mercado, en perspectiva.</h1>
+    <p>Cotizaciones, tendencias y señales para seguir tus activos.</p>
+  </div>
+  <app-connection-status [status]="vm.realtime.status()" />
+</header>
+<div class="toolbar">
+  <div class="asset-filters" aria-label="Activos visibles">
+    @for (asset of assets; track asset.id) {
+      <button
+        class="filter"
+        [class.selected]="vm.selectedAssets().includes(asset.id)"
+        [attr.aria-pressed]="vm.selectedAssets().includes(asset.id)"
+        (click)="vm.toggleAsset(asset.id)"
+      >
+        {{ asset.name }} <span>{{ asset.symbol }}</span>
+      </button>
+    }
+  </div>
+  <app-currency-selector [currency]="vm.currency()" (selected)="vm.currency.set($event)" />
+</div>
+@if (vm.error()) {
+  <div class="notice error" role="alert">
+    {{ vm.error() }} <button class="text-button" (click)="vm.refresh()">Reintentar</button>
+  </div>
+}
+@if (vm.snapshot(); as snapshot) {
+  @if (snapshot.source === 'demo' || snapshot.isStale) {
+    <div class="notice warning" role="status">
+      <strong>{{
+        snapshot.source === 'demo' ? 'Datos simulados de demostración' : 'Datos desactualizados'
+      }}</strong
+      ><span>{{ snapshot.message }}</span>
+    </div>
+  }
+  <div class="metric-cards">
+    @for (quote of vm.quotes(); track quote.coinId) {
+      <button
+        class="quote-card"
+        (click)="vm.asset.set(quote.coinId)"
+        [class.focused]="vm.asset() === quote.coinId"
+      >
+        <span class="card-top"
+          ><span class="coin" [class]="'coin ' + quote.coinId">{{ quote.symbol.slice(0, 1) }}</span
+          ><strong>{{ quote.name }}</strong
+          ><span class="ticker">{{ quote.symbol }}</span></span
+        ><span class="quote-price">{{ money(quote.price, vm.currency()) }}</span
+        ><span class="card-bottom"
+          ><span
+            [class.positive]="(quote.change24h ?? 0) >= 0"
+            [class.negative]="(quote.change24h ?? 0) < 0"
+            >{{ percent(quote.change24h) }}</span
+          ><span>últimas 24 horas</span></span
+        >
+      </button>
+    }
+  </div>
+} @else if (vm.loading()) {
+  <div class="panel empty" role="status">Cargando cotizaciones…</div>
+}
+<section class="panel chart-panel" aria-labelledby="chart-title">
+  <div class="panel-heading">
+    <div>
+      <div class="eyebrow">EVOLUCIÓN DEL PRECIO</div>
+      <h2 id="chart-title">Una mirada más cercana</h2>
+    </div>
+    <div class="chart-controls">
+      <label class="sr-only" for="chart-asset">Activo del gráfico</label
+      ><select
+        id="chart-asset"
+        [value]="vm.asset()"
+        (change)="vm.asset.set($any($event.target).value)"
+      >
+        @for (asset of assets; track asset.id) {
+          <option [value]="asset.id">{{ asset.name }}</option>
+        }
+      </select>
+      <div class="segmented">
+        <button
+          [class.active]="vm.days() === 1"
+          [attr.aria-pressed]="vm.days() === 1"
+          (click)="vm.days.set(1)"
+        >
+          24 h</button
+        ><button
+          [class.active]="vm.days() === 7"
+          [attr.aria-pressed]="vm.days() === 7"
+          (click)="vm.days.set(7)"
+        >
+          7 días
+        </button>
+      </div>
+    </div>
+  </div>
+  @if (vm.historyError()) {
+    <div class="notice error" role="alert">{{ vm.historyError() }}</div>
+  }
+  @if (vm.history(); as history) {
+    <app-price-chart [history]="history" />
+    <div class="chart-caption">
+      <span
+        >Histórico {{ history.source === 'demo' ? 'simulado' : 'de CoinGecko' }} ·
+        {{ vm.currency().toUpperCase() }}
+        @if (history.isStale) {
+          · Desactualizado
+        }</span
+      ><span>Origen: {{ history.sourceUpdatedAt | date: 'dd/MM HH:mm' }}</span>
+    </div>
+  } @else {
+    <div class="chart-placeholder" role="status">
+      {{ vm.historyLoading() ? 'Cargando histórico…' : 'Histórico no disponible' }}
+    </div>
+  }
+</section>
+<section class="panel" aria-labelledby="assets-title">
+  <div class="panel-heading">
+    <div>
+      <div class="eyebrow">COTIZACIONES</div>
+      <h2 id="assets-title">Activos del mercado</h2>
+    </div>
+    <span class="muted">{{ vm.quotes().length }} activos · {{ vm.currency().toUpperCase() }}</span>
+  </div>
+  <div class="table-options">
+    <app-metric-selector [selected]="vm.metrics()" (toggle)="vm.toggleMetric($event)" />
+  </div>
+  <app-market-table
+    [quotes]="vm.quotes()"
+    [currency]="vm.currency()"
+    [metrics]="vm.metrics()"
+    [threshold]="vm.thresholds.value()"
+    (selectAsset)="vm.asset.set($event)"
+  />
+  <div class="panel-footer">
+    <span
+      >Umbral de volatilidad: <strong>{{ vm.thresholds.value() }} %</strong></span
+    ><span>Consulta: {{ vm.snapshot()?.fetchedAt | date: 'dd/MM/yyyy HH:mm:ss' }}</span>
+  </div>
+</section>
+<p class="footnote">
+  Volatilidad: desviación estándar muestral de 24 rendimientos logarítmicos horarios × √24 × 100.
+  Requiere 25 cierres válidos consecutivos. La variación de 24 h es una métrica distinta.
+</p>

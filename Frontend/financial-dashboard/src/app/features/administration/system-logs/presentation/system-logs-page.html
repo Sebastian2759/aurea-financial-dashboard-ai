@@ -1,0 +1,104 @@
+<header class="page-heading">
+  <div>
+    <div class="eyebrow">ADMINISTRACIÓN</div>
+    <h1>Estado y eventos del sistema.</h1>
+    <p>Consulta incidencias del mercado y de la aplicación.</p>
+  </div>
+  <span class="badge">Solo administradores</span>
+</header>
+<section class="panel">
+  <form class="log-filters" (ngSubmit)="load()">
+    <div>
+      <label for="log-level">Nivel</label
+      ><select id="log-level" name="level" [(ngModel)]="filters.level">
+        <option value="">Todos los niveles</option>
+        <option value="Information">Información</option>
+        <option value="Warning">Advertencia</option>
+        <option value="Error">Error</option>
+      </select>
+    </div>
+    <div>
+      <label for="log-component">Origen</label
+      ><select id="log-component" name="component" [(ngModel)]="filters.component">
+        <option value="">Todos los orígenes</option>
+        <option value="Api">Aplicación</option>
+        <option value="Market">Mercado</option>
+      </select>
+    </div>
+    <div>
+      <label for="log-from">Desde</label
+      ><input id="log-from" name="from" type="datetime-local" [(ngModel)]="filters.from" />
+    </div>
+    <div>
+      <label for="log-to">Hasta</label
+      ><input id="log-to" name="to" type="datetime-local" [(ngModel)]="filters.to" />
+    </div>
+    <button class="secondary" [disabled]="vm.loading()">Aplicar filtros</button>
+  </form>
+  @if (vm.error()) {
+    <p class="notice error" role="alert">{{ vm.error() }}</p>
+  }
+  @if (vm.loading()) {
+    <p class="empty" role="status">Cargando registros…</p>
+  } @else {
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Fecha</th>
+            <th>Nivel</th>
+            <th>Origen</th>
+            <th>Evento</th>
+            <th>Detalle</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (event of vm.data().items; track event.id) {
+            <tr>
+              <td class="nowrap">{{ event.createdAtUtc | date: 'dd/MM/yyyy HH:mm:ss' }}</td>
+              <td>
+                <span
+                  class="badge"
+                  [class.warning]="event.level === 'Warning'"
+                  [class.error]="event.level === 'Error'"
+                  >{{ levels[event.level] }}</span
+                >
+              </td>
+              <td>{{ components[event.component] }}</td>
+              <td class="event-code">{{ event.code }}</td>
+              <td>
+                {{ event.message }}
+                @if (event.coinId || event.currency) {
+                  <small>{{ event.coinId }} {{ event.currency?.toUpperCase() }}</small>
+                }
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="5" class="empty">No hay registros para estos filtros.</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+  <div class="panel-footer">
+    <span>{{ vm.data().total }} registros · Página {{ vm.data().page }}</span>
+    <div class="form-actions">
+      <button
+        class="secondary"
+        [disabled]="vm.loading() || vm.data().page <= 1"
+        (click)="load(vm.data().page - 1)"
+      >
+        Anterior
+      </button>
+      <button
+        class="secondary"
+        [disabled]="vm.loading() || vm.data().page * vm.data().pageSize >= vm.data().total"
+        (click)="load(vm.data().page + 1)"
+      >
+        Siguiente
+      </button>
+    </div>
+  </div>
+</section>

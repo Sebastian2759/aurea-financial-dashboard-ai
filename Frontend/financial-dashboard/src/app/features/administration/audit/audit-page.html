@@ -1,0 +1,93 @@
+<header class="page-heading">
+  <div>
+    <div class="eyebrow">ADMINISTRACIÓN</div>
+    <h1>Cada cambio tiene historia.</h1>
+    <p>Consulta quién hizo qué, cuándo y sobre la lista de quién.</p>
+  </div>
+  <span class="badge">Registro de actividad</span>
+</header>
+<section class="panel audit-panel">
+  <form class="audit-filters" (ngSubmit)="load()">
+    <label
+      >Actor<select name="actor" [(ngModel)]="actor">
+        <option value="">Todos los usuarios</option>
+        <option value="trader-a">Trader A</option>
+        <option value="trader-b">Trader B</option>
+        <option value="admin">Admin</option>
+      </select></label
+    ><label
+      >Acción<select name="action" [(ngModel)]="action">
+        <option value="">Todas las acciones</option>
+        <option value="watchlist.add">Activo agregado</option>
+        <option value="watchlist.update">Activo editado</option>
+        <option value="watchlist.remove">Activo eliminado</option>
+        <option value="thresholds.update">Umbral actualizado</option>
+      </select></label
+    ><button class="secondary" [disabled]="vm.loading()">Aplicar filtros</button>
+  </form>
+  @if (vm.error()) {
+    <p class="notice error" role="alert">{{ vm.error() }}</p>
+  }
+  @if (vm.loading()) {
+    <p class="empty" role="status">Cargando actividad…</p>
+  } @else {
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Fecha</th>
+            <th>Actor</th>
+            <th>Acción</th>
+            <th>Propietario</th>
+            <th>Cambio</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (event of vm.data().items; track event.id) {
+            <tr>
+              <td class="nowrap">{{ event.createdAtUtc | date: 'dd/MM/yyyy HH:mm:ss' }}</td>
+              <td>
+                <span class="badge">{{ event.actorId }}</span>
+              </td>
+              <td>{{ labels[event.action] || event.action }}</td>
+              <td>{{ event.ownerId || 'Configuración global' }}</td>
+              <td>
+                <details>
+                  <summary>Ver detalle</summary>
+                  <div class="audit-detail">
+                    <strong>Antes</strong>
+                    <pre>{{ event.before || 'Sin valor anterior' }}</pre>
+                    <strong>Después</strong>
+                    <pre>{{ event.after || 'Eliminado' }}</pre>
+                  </div>
+                </details>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="5" class="empty">Todavía no hay cambios para estos filtros.</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+  <div class="panel-footer">
+    <span>{{ vm.data().total }} eventos · Página {{ vm.data().page }}</span>
+    <div class="form-actions">
+      <button
+        class="secondary"
+        [disabled]="vm.data().page <= 1 || vm.loading()"
+        (click)="load(vm.data().page - 1)"
+      >
+        Anterior</button
+      ><button
+        class="secondary"
+        [disabled]="vm.data().page * 10 >= vm.data().total || vm.loading()"
+        (click)="load(vm.data().page + 1)"
+      >
+        Siguiente
+      </button>
+    </div>
+  </div>
+</section>
